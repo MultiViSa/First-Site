@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="python in html" content="width=device-width, initial-scale=1.0">
+    <title>python_in_html</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+   <style>
+    body {
+        background-color: rgb(39, 37, 37);
+        font-family: "Roboto+Mono", sans-serif;
+    }
+
+    .Überschrift {
+        color: white;
+        margin-bottom: 300px;
+    }
+    label {
+        color: white;
+    }
+
+    .login-in {
+        display: flex;
+        justify-content: center;
+        border-style: solid;
+        width: 50%;
+        margin: 0 auto;
+        background-color: rgb(10, 80, 80);
+        max-width: 1000px;
+    }
+   </style>
+
+</head>
+<body>
+    <h1 class="Überschrift">
+        Hello
+    </h1> <br>
+    <div class="login-in">
+     <form action="python_in_html" method="post">
+         <label for="Title">Title:</label>
+         <label for="Mr.">Mr.</label>
+         <input type="radio" id="Mr." name="Title" value="Mr.">
+
+         <label for="Mrs.">Mrs.</label>
+         <input type="radio" id="Mrs." name="Title" value="Mrs.">
+
+         <label for="Phd.">Phd.</label>
+         <input type="radio" id="Phd." name="Title" value="Phd.">
+         <br>
+
+         <label for="name">write your name:</label>
+         <input type="text" id="name" name="name" placeholder="Mustermann Max" required>
+         <br>
+         <label for="pass">write your Password:</label>
+         <input type="password" id="pass" name="pass" minlength="8" required>
+         <br>
+         <button type="submit">submit</button>
+         <button type="reset">reset</button>
+     </form>
+    </div>
+</body>
+</html>
