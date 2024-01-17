@@ -9,14 +9,28 @@
 
 </head>
 <body>
+    <header>
+        <h2 class="logo">logo</h2>
+        <nav class="navigation">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+            <button class="btnLogin-popup">Login</button>
+        </nav>
+    </header>
 
     <div class="Wrapper">
+        <span class="icon-close">
+            <i class='bx bx-exit'></i>
+        </span>
 
-     <form action="python_in_html" method="post">
-
-         <h1>Login</h1>
+    <div class="form-box_Login">    
+     <h1>Login</h1>   
+     <form action="#">
 
             <div class="input-box">
+                <span class="icon"></span>
                 <label>
                     <input type="text" placeholder="Name" required>
                     <i class='bx bx-user'></i>
@@ -40,16 +54,63 @@
 
                 <button type="submit" class="btn">Login</button>
 
-            <div class="register-link">
+            <div class="Login-register">
                 <p>
                     Don't have an account
-                    <a href="#">Register</a>
+                    <a href="#" class="register-link">Register</a>
+                </p>
+            </div>
+     </form>       
+    </div>    
+
+    <div class="form-box_Register">
+     <h1>Registration</h1>
+     <form action="#">  
+
+            <div class="input-box">
+                <span class="icon"></span>
+                <label>
+                    <input type="text" placeholder="Name" required>
+                    <i class='bx bx-user'></i>
+                </label> 
+            </div>
+
+            <div class="input-box">
+                <span class="icon"></span>
+                <label>
+                    <input type="email" placeholder="Email" required>
+                    <i class='bx bx-envelope' ></i>
+                </label> 
+            </div>
+
+            <div class="input-box">
+                <label>
+                    <input type="password" placeholder="password" required>
+                    <i class='bx bx-lock-alt' ></i>
+                </label>    
+            </div>
+
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox">I agree to the terms & conditions
+                </label>    
+            </div>
+
+                <button type="submit" class="btn">Register</button>
+
+            <div class="Login-register">
+                <p>
+                    Already have an account
+                    <a href="#" class="login-link">Login</a>
                 </p>
             </div>
 
      </form>
+    </div> 
 
     </div>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
