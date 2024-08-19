@@ -8,7 +8,7 @@ $dbname = "Test";
 
 try {
     // Verbindung zur Datenbank herstellen
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:servername=$servername;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Daten aus dem Formular erhalten
