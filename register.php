@@ -1,8 +1,8 @@
 <?php
 //Datenbankverbindung herstellen 
 $servername = "192.168.123.126";
-$username = "USER1";
-$password = "MYSQL1234";
+$username = "azubi";
+$password = "azubi";
 $dbname = "Test";
 
 
