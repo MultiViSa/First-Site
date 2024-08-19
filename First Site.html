@@ -1,8 +1,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="python in html" content="width=device-width, initial-scale=1.0">
-    <title>First-Site</title>
+    <meta name="First Site" content="width=device-width, initial-scale=1.0">
+    <title>python_in_html</title>
 
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -27,19 +27,19 @@
 
     <div class="form-box Login">    
      <h1>Login</h1>   
-     <form action="#">
+     <form action="first_site.php" method="post">
 
             <div class="input-box">
                 <span class="icon"></span>
                 <label>
-                    <input type="text" placeholder="Name" required>
+                    <input type="text" id="username" placeholder="Name" required>
                     <i class='bx bx-user'></i>
                 </label> 
             </div>
 
             <div class="input-box">
                 <label>
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" id="password" placeholder="Password" required>
                     <i class='bx bx-lock-alt' ></i>
                 </label>    
             </div>
@@ -108,8 +108,7 @@
      </form>
     </div> 
 
-    </div>
-
+   </div>
     <script src="script.js"></script>
 
 </body>
