@@ -1,29 +1,60 @@
 <?php
 //Datenbankverbindung herstellen 
-$servername = "debian";
+$servername = "192.168.123.126";
 $username = "USER1";
 $password = "MYSQL1234";
 $dbname = "Test";
 
-//Verbindung erstellen
-$conn = new mysql($servername, $username, $password, $dbname);
 
-//Verbindung überprüfen
-if ($conn->connect_error) {
-    die("Verbindung fehlgeschlagen: " . $conn->connect_error);
-}
+try {
+    // Verbindung zur Datenbank herstellen
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$user = $_POST['username'];
-$pass = $_POST['password'];
+    // Daten aus dem Formular erhalten
+    $user = $_POST['username'];
+    $email = $_POST['email'];
+    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-//SQL_Anweisungen zum EInfügen der Benutzerdaten
-$spl = "INSERT INTO test (username, password) VALUES ('$user', '$pass')";
+    // SQL-Abfrage zum Einfügen des Benutzers
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+    $stmt->execute([$user, $email, $pass]);
 
-if($conn->query($sql) === TRUE) {
     echo "Registrierung erfolgreich!";
-} else {
-    echo "Fehler: " . $sql . "<br>" . $conn->error;
+} catch (PDOException $e) {
+    die("Fehler: " . $e->getMessage());
 }
+?>
+Beispiel für die Anmeldung (login.php):
+php
+Code kopieren
+<?php
+// Verbindungsparameter zur Datenbank
+$host = 'localhost';
+$dbname = 'deine_datenbank';
+$username = 'dein_db_user';
+$password = 'dein_db_pass';
 
-$conn->close();
+try {
+    // Verbindung zur Datenbank herstellen
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Daten aus dem Formular erhalten
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+
+    // SQL-Abfrage zur Überprüfung des Benutzers
+    $stmt = $pdo->prepare("SELECT password FROM users WHERE username = ?");
+    $stmt->execute([$user]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row && password_verify($pass, $row['password'])) {
+        echo "Anmeldung erfolgreich!";
+    } else {
+        echo "Ungültiger Benutzername oder Passwort!";
+    }
+} catch (PDOException $e) {
+    die("Fehler: " . $e->getMessage());
+}
 ?>
