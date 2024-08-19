@@ -2,7 +2,7 @@
 //Datenbankverbindung herstellen 
 $servername = "debian";
 $username = "USER1";
-echo password_hash("MYSQL1234", PASSWORD_DEFAULT);
+$password = "MYSQL1234";
 $dbname = "Test";
 
 //Verbindung erstellen
