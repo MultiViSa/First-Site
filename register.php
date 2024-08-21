@@ -15,19 +15,27 @@ try {
     $user = $_POST['username'];
     $pass = $_POST['password'];
 
+    $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+
     // SQL-Abfrage zur Überprüfung des Benutzers
     $stmt = $pdo->prepare("SELECT password FROM user WHERE username = ?");
     $stmt->execute([$user]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Debug-Ausgabe für Benutzername und Passwort
-    echo 'Benutzername aus DB: ' . htmlspecialchars($user) . '<br>';
-    echo 'Passwort aus DB: ' . htmlspecialchars($row['password']) . '<br>';
+    // Überprüfen, ob eine Zeile zurückgegeben wurde
+    if ($stmt->rowCount() > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($row && password_verify($pass, $row['password'])) {
-        echo "Anmeldung erfolgreich!";
+        // Debug-Ausgabe für Benutzername und Passwort
+        echo 'Benutzername aus DB: ' . htmlspecialchars($user) . '<br>';
+        echo 'Passwort aus DB: ' . htmlspecialchars($row['password']) . '<br>';
+
+        if (password_verify($pass, $row['password'])) {
+            echo "Anmeldung erfolgreich!";
+        } else {
+            echo "Ungültiger Benutzername oder Passwort!";
+        }
     } else {
-        echo "Ungültiger Benutzername oder Passwort!";
+        echo "Benutzername nicht gefunden!";
     }
 } catch (PDOException $e) {
     die("Fehler: " . $e->getMessage());
