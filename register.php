@@ -16,9 +16,13 @@ try {
     $pass = $_POST['password'];
 
     // SQL-Abfrage zur Überprüfung des Benutzers
-    $stmt = $pdo->prepare("SELECT passwort FROM user WHERE benutzername = ?");
+    $stmt = $pdo->prepare("SELECT password FROM user WHERE username = ?");
     $stmt->execute([$user]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Debug-Ausgabe für Benutzername und Passwort
+    echo 'Benutzername aus DB: ' . htmlspecialchars($user) . '<br>';
+    echo 'Passwort aus DB: ' . htmlspecialchars($row['password']) . '<br>';
 
     if ($row && password_verify($pass, $row['password'])) {
         echo "Anmeldung erfolgreich!";
