@@ -7,7 +7,7 @@ $password = 'azubi';
 
 try {
     // Verbindung zur Datenbank herstellen
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:192.168.123.20=$host;Test=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Daten aus dem Formular erhalten
