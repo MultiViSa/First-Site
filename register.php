@@ -1,43 +1,35 @@
 <?php
-// 1. Verbindungsdetails zur Datenbank
-$servername = "192.168.123.20"; // IP des Debian-Servers
-$username = "azubi"; // Datenbank-Benutzername
-$password = "azubi"; // Datenbank-Passwort
-$dbname = "test"; // Name der Datenbank
+// Verbindungsparameter zur Datenbank
+$host = '192.168.123.20';
+$dbname = 'Test';
+$username = 'azubi';
+$password = 'azubi';
 
-// 2. Verbindung zur Datenbank herstellen
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    // Verbindung zur Datenbank herstellen
+    $pdo = new PDO("mysql:192.168.123.20=$host;Test=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Verbindung überprüfen
-if ($conn->connect_error) {
-    die("Verbindung zur Datenbank fehlgeschlagen: " . $conn->connect_error);
-}
+    // Daten aus dem Formular erhalten
+    $user = $_POST['username'];
+    $email = $_POST['email'];
+    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-// 3. Daten aus dem Formular verarbeiten
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Formularfelder auslesen und schützen gegen SQL-Injection
-    $benutzername = $conn->real_escape_string($_POST['username']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $passwort = password_hash($_POST['password'], PASSWORD_DEFAULT); // Passwort sicher hashen
-
-    // 4. Überprüfen, ob der Benutzername oder die E-Mail bereits existieren
-    $sql = "SELECT id FROM users WHERE benutzername='$benutzername' OR email='$email'";
+   $sql = "SELECT id FROM user WHERE username='$user' OR email='$email'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         echo "Benutzername oder E-Mail bereits vergeben.";
-    } else {
-        // 5. Benutzer in der Datenbank speichern
-        $sql = "INSERT INTO user (benutzername, email, passwort) VALUES ('$benutzername', '$email', '$passwort')";
+    } else { 
+    
+    // SQL-Abfrage zum Einfügen des Benutzers
+    $stmt = $pdo->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
+    $stmt->execute([$user, $email, $pass]);
 
-        if ($conn->query($sql) === TRUE) {
-            echo "Registrierung erfolgreich!";
-        } else {
-            echo "Fehler: " . $sql . "<br>" . $conn->error;
-        }
-    }
+    echo "Registrierung erfolgreich!";
+} catch (PDOException $e) {
+    die("Fehler: " . $e->getMessage());
 }
 
-// 6. Verbindung schließen
 $conn->close();
 ?>
