@@ -16,7 +16,7 @@ try {
     $pass = $_POST['password'];
 
     // SQL-Abfrage zur Überprüfung des Benutzers
-    $stmt = $pdo->prepare("SELECT password FROM users WHERE username = ?");
+    $stmt = $pdo->prepare("SELECT password FROM user WHERE username = ?");
     $stmt->execute([$user]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
