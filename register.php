@@ -5,31 +5,27 @@ $dbname = 'Test';
 $username = 'azubi';
 $password = 'azubi';
 
+
 try {
     // Verbindung zur Datenbank herstellen
-    $pdo = new PDO("mysql:192.168.123.20=$host;Test=$dbname", $username, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Daten aus dem Formular erhalten
     $user = $_POST['username'];
-    $email = $_POST['email'];
-    $pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $pass = $_POST['password'];
 
-   $sql = "SELECT id FROM user WHERE username='$user' OR email='$email'";
-    $result = $conn->query($sql);
+    // SQL-Abfrage zur Überprüfung des Benutzers
+    $stmt = $pdo->prepare("SELECT password FROM users WHERE username = ?");
+    $stmt->execute([$user]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-        echo "Benutzername oder E-Mail bereits vergeben.";
-    } else { 
-    
-    // SQL-Abfrage zum Einfügen des Benutzers
-    $stmt = $pdo->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
-    $stmt->execute([$user, $email, $pass]);
-
-    echo "Registrierung erfolgreich!";
+    if ($row && password_verify($pass, $row['password'])) {
+        echo "Anmeldung erfolgreich!";
+    } else {
+        echo "Ungültiger Benutzername oder Passwort!";
+    }
 } catch (PDOException $e) {
     die("Fehler: " . $e->getMessage());
 }
-
-$conn->close();
 ?>
