@@ -15,6 +15,10 @@ try {
     $user = $_POST['username'];
     $pass = $_POST['password'];
 
+    // Debug-Ausgabe für übergebene Daten
+        echo 'Übergebener Benutzername: ' . htmlspecialchars($user) . '<br>';
+        echo 'Übergebenes Passwort: ' . htmlspecialchars($pass) . '<br>';
+
     $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
 
     // SQL-Abfrage zur Überprüfung des Benutzers
