@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // 1. Verbindungsdetails zur Datenbank
 $servername = "192.168.123.20"; // oder die IP des Servers
 $username = "azubi"; // Datenbank-Benutzername
@@ -15,9 +18,10 @@ if ($conn->connect_error) {
 
 // 3. Daten aus dem Formular verarbeiten
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $benutzername = $conn->real_escape_string($_POST['benutzername']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $passwort = password_hash($_POST['passwort'], PASSWORD_DEFAULT); // Passwort sicher hashen
+    $username = isset($_POST['username']) ? $conn->real_escape_string($_POST['username']) : null;
+    $email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : null;
+    $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
+}
 
     // 4. Überprüfen, ob der Benutzername oder die E-Mail bereits existieren
     $sql = "SELECT id FROM users WHERE benutzername='$benutzername' OR email='$email'";
