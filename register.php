@@ -1,6 +1,6 @@
 <?php
 // 1. Verbindungsdetails zur Datenbank
-$servername = "192.168-123.20"; // oder die IP des Servers
+$servername = "192.168.123.20"; // oder die IP des Servers
 $username = "azubi"; // Datenbank-Benutzername
 $password = "azubi"; // Datenbank-Passwort
 $dbname = "Test"; // Name der Datenbank
