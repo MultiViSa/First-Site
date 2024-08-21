@@ -1,6 +1,7 @@
 <?php
 // Verbindungsparameter zur Datenbank
 $host = '192.168.123.20';
+$host = 'debian';
 $dbname = 'Test';
 $username = 'azubi';
 $password = 'azubi';
