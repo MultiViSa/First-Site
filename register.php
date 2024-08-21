@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Benutzername oder E-Mail bereits vergeben.";
     } else {
         // 5. Benutzer in der Datenbank speichern
-        $sql = "INSERT INTO users (benutzername, email, passwort) VALUES ('$benutzername', '$email', '$passwort')";
+        $sql = "INSERT INTO user (benutzername, email, passwort) VALUES ('$benutzername', '$email', '$passwort')";
 
         if ($conn->query($sql) === TRUE) {
             echo "Registrierung erfolgreich!";
