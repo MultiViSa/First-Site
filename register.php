@@ -1,6 +1,6 @@
 <?php
 //Datenbankverbindung herstellen 
-$servername = "192.168.123.126";
+$servername = "192.168.123.20";
 $username = "azubi";
 $password = "azubi";
 $dbname = "Test";
