@@ -22,6 +22,6 @@ try {
 
     echo "Registrierung erfolgreich!";
 } catch (PDOException $e) {
-    die("Fehler: " . $e->getMessage());
+    die("Fehler bei: " . $e->getMessage());
 }
 ?>
