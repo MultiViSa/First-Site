@@ -1,47 +1,48 @@
 <?php
-// Verbindungsparameter zur Datenbank
-$host = '192.168.123.20';
-$dbname = 'Test';
-$username = 'azubi';
-$password = 'azubi';
+// Fehlerberichterstattung aktivieren
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+// Verbindungsdetails zur Datenbank
+$servername = "localhost";
+$username = "root"; // MariaDB-Benutzername
+$password = "azubi";     // MariaDB-Passwort
+$dbname = "loginsystem";
 
-try {
-    // Verbindung zur Datenbank herstellen
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Verbindung zur Datenbank herstellen
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Daten aus dem Formular erhalten
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+// Verbindung überprüfen
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-    // Debug-Ausgabe für übergebene Daten
-        echo 'Übergebener Benutzername: ' . htmlspecialchars($user) . '<br>';
-        echo 'Übergebenes Passwort: ' . htmlspecialchars($pass) . '<br>';
+// Formular-Daten verarbeiten
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['register'])) {
+        // Registrieren-Formular wurde gesendet
+        $user = $_POST['username'];
+        $pass = $_POST['password'];
 
-    $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+        // Überprüfen, ob Benutzername bereits existiert
+        $sql = "SELECT * FROM users WHERE username='$user'";
+        $result = $conn->query($sql);
 
-    // SQL-Abfrage zur Überprüfung des Benutzers
-    $stmt = $pdo->prepare("SELECT password FROM user WHERE username = ?");
-    $stmt->execute([$user]);
-
-    // Überprüfen, ob eine Zeile zurückgegeben wurde
-    if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Debug-Ausgabe für Benutzername und Passwort
-        echo 'Benutzername aus DB: ' . htmlspecialchars($user) . '<br>';
-        echo 'Passwort aus DB: ' . htmlspecialchars($row['password']) . '<br>';
-
-        if (password_verify($pass, $row['password'])) {
-            echo "Anmeldung erfolgreich!";
+        if ($result->num_rows > 0) {
+            echo "Username already exists.";
         } else {
-            echo "Ungültiger Benutzername oder Passwort!";
+            // Passwort-Hashing (für sichere Passwortspeicherung)
+            $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+
+            // Benutzer in der Datenbank speichern
+            $sql = "INSERT INTO users (username, password) VALUES ('$user', '$hashed_password')";
+            if ($conn->query($sql) === TRUE) {
+                echo "Registration successful! You can now log in.";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
         }
-    } else {
-        echo "Benutzername nicht gefunden!";
     }
-} catch (PDOException $e) {
-    die("Fehler: " . $e->getMessage());
 }
 ?>
