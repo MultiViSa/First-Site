@@ -238,3 +238,41 @@ header {
 .Login-register p a:hover {
     text-decoration: underline;
 }
+
+.response-box {
+    position: fixed; /* Fixed position to keep it in place */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the box */
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    border: 2px solid rgba(255, 255, 255, .2);
+    padding: 40px;
+    border-radius: 10px;
+    z-index: 1000; /* Make sure it appears on top */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Add space between the button and message */
+}
+
+.response-box.success {
+    border-color: green;  /* Erfolgreiche Nachrichten grün */
+}
+
+.response-box.error {
+    border-color: red;  /* Fehlerhafte Nachrichten rot */
+}
+
+#close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+}
+
+#close-btn:hover {
+    color: #ccc; /* Lighten color on hover */
+}

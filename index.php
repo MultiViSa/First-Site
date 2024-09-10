@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="First Site" content="width=device-width, initial-scale=1.0">
+    <meta name="index" content="width=device-width, initial-scale=1.0">
     <title>python_in_html</title>
 
     <link rel="stylesheet" href="style.css">
@@ -9,6 +9,28 @@
 
 </head>
 <body>
+
+<?php
+session_start(); // Session starten, um die Nachricht abzurufen
+
+if (isset($_SESSION['message'])) {
+    $message_class = isset($_SESSION['message_type']) && $_SESSION['message_type'] == 'success' ? 'success' : 'error';
+
+    echo "<div id='response-box' class='response-box $message_class'>
+            <span id='close-btn' class='bx bx-exit'></span>
+            <p>" . $_SESSION['message'] . "</p>
+          </div>";
+    
+    unset($_SESSION['message']); // Nachricht nach dem Anzeigen löschen
+    unset($_SESSION['message_type']); // Typ ebenfalls löschen
+}
+?>
+
+
+
+
+
+
     <header>
         <h2 class="logo">logo</h2>
         <nav class="navigation">
@@ -16,7 +38,7 @@
             <a href="#">About</a>
             <a href="#">Services</a>
             <a href="#">Contact</a>
-            <button class="btnLogin-popup">Login</button>
+            <button id="btn" class="btnLogin-popup">Login</button>
         </nav>
     </header>
 
@@ -27,8 +49,7 @@
 
     <div class="form-box Login">    
      <h1>Login</h1>   
-     <form action="login.php" method="POST">
-
+     <form action="login_register.php" method="POST">
             <div class="input-box">
                 <span class="icon"></span>
                 <label for="username">
@@ -52,7 +73,9 @@
                 </label>
             </div>
 
-                <button type="submit" name="login" class="btn">Login</button>
+                <button type="submit" name="login" class="btn" id="btn">Login</button>
+
+                <!--<div id="loginMessage" class="response-box"></div>-->
 
             <div class="Login-register">
                 <p>
@@ -65,8 +88,7 @@
 
     <div class="form-box Register">
      <h1>Registration</h1>
-     <form action="register.php" method="POST">  
-
+     <form action="login_register.php" method="POST">  
             <div class="input-box">
                 <span class="icon"></span>
                 <label for="username">
@@ -96,7 +118,9 @@
                 </label>    
             </div>
 
-                <button type="submit" name="register" class="btn">Register</button>
+                <button type="submit" name="register" class="btn" id="btn">Register</button>
+
+                <!--<div id="registerMessage" class="response-box"></div>-->
 
             <div class="Login-register">
                 <p>
