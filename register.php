@@ -24,19 +24,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Registrieren-Formular wurde gesendet
         $user = $_POST['username'];
         $pass = $_POST['password'];
+        $email = $_POST['email'];
 
         // Überprüfen, ob Benutzername bereits existiert
-        $sql = "SELECT * FROM users WHERE username='$user'";
+        $sql = "SELECT * FROM users WHERE username='$user' OR email='$email'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            echo "Username already exists.";
+            echo "Username or email already exists.";
         } else {
             // Passwort-Hashing (für sichere Passwortspeicherung)
             $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
 
             // Benutzer in der Datenbank speichern
-            $sql = "INSERT INTO users (username, password) VALUES ('$user', '$hashed_password')";
+            $sql = "INSERT INTO users (username, password, email) VALUES ('$user', '$hashed_password', '$email')";
             if ($conn->query($sql) === TRUE) {
                 echo "Registration successful! You can now log in.";
             } else {
