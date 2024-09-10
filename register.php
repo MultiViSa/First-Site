@@ -1,28 +1,35 @@
 <?php
+
 // Fehlerberichterstattung aktivieren
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Verbindungsdetails zur Datenbank
 $servername = "localhost";
-$username = "root";
-$password = "azubi";
-$dbname = "register";
+$username = "root"; // MariaDB-Benutzername
+$password = "azubi"; // MariaDB-Passwort
+$dbname = "register"; // Name der Datenbank
 
+// Verbindung zur Datenbank herstellen
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// Verbindung überprüfen
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 echo "Database connection successful.<br>";
 
+// Formular-Daten verarbeiten
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['register'])) {
-        echo "Register button clicked.<br>";
+    echo "Register button clicked.<br>";
 
+    // Überprüfen, ob die POST-Daten vorhanden sind
+    if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
+        $email = $_POST['email'];
 
         // Überprüfen, ob Benutzername bereits existiert
         $sql = "SELECT * FROM users WHERE username='$user'";
@@ -31,39 +38,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             echo "Username already exists.";
         } else {
-            // Passwort-Hashing (für sichere Passwortspeicherung)
+            // Passwort-Hashing (für eine sichere Passwortspeicherung)
             $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
 
             // Benutzer in der Datenbank speichern
-            $sql = "INSERT INTO users (username, password) VALUES ('$user', '$hashed_password')";
+            $sql = "INSERT INTO users (username, email, password) VALUES ('$user', '$email', '$hashed_password')";
             if ($conn->query($sql) === TRUE) {
                 echo "Registration successful! You can now log in.";
             } else {
-                // Passwort-Hashing
-                $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-
-                // Bereite die SQL-Anweisung vor, um SQL-Injection zu vermeiden
-                $stmt = $conn->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-                if (!$stmt) {
-                    echo "Prepare failed: " . $conn->error . "<br>";
-                } else {
-                    $stmt->bind_param("sss", $user, $hashed_password, $email);
-
-                    if ($stmt->execute()) {
-                        echo "Registration successful! You can now log in.<br>";
-                    } else {
-                        echo "Error executing query: " . $stmt->error . "<br>";
-                    }
-                }
+                echo "Error: " . $sql . "<br>" . $conn->error;
             }
-
-            $stmt->close();
         }
     } else {
-        echo "Register button not set.<br>";
+        echo "Username, email, or password not set.";
     }
-} else {
-    echo "Request method not POST.<br>";
 }
 
 $conn->close();
