@@ -33,15 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT * FROM users WHERE username='$user'";
         $result = $conn->query($sql);
 
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($pass, $row['password'])) {
-                $_SESSION['message'] = "Login successful! Welcome, $user";
-                $_SESSION['message_type'] = 'success';  // Erfolgreiche Nachricht
-            } else {
-                $_SESSION['message'] = "Invalid password.";
-                $_SESSION['message_type'] = 'error';  // Fehlerhafte Nachricht
-            }
+        if (password_verify($pass, $row['password'])) {
+            //$_SESSION['logged_in'] = true;  // Benutzer ist eingeloggt
+            //$_SESSION['username'] = $user;  // Benutzername speichern
+            $_SESSION['message'] = "Login successful! Welcome back $user";
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = "Invalid password.";
+            $_SESSION['message_type'] = 'error';
+        }
+        
         } else {
             $_SESSION['message'] = "User does not exist.";
             $_SESSION['message_type'] = 'error';  // Fehlerhafte Nachricht
@@ -50,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: index.php");
         exit();
     } 
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['register']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {

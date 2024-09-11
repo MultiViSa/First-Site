@@ -244,9 +244,9 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); /* Center the box */
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    background: rgba(51, 51, 51, 0.8); /* Semi-transparent background */
     border: 2px solid rgba(255, 255, 255, .2);
-    padding: 40px;
+    padding: 65px 85px;
     border-radius: 10px;
     z-index: 1000; /* Make sure it appears on top */
     color: #fff;
@@ -268,11 +268,29 @@ header {
     position: absolute;
     top: 5px;
     right: 5px;
-    font-size: 24px;
+    font-size: 34px;
     cursor: pointer;
     color: #fff;
 }
 
 #close-btn:hover {
     color: #ccc; /* Lighten color on hover */
+}
+
+.retry-btn {
+    position: absolute;
+    bottom: 5px; /* Abstand vom unteren Rand */
+    right: 5px;  /* Abstand vom rechten Rand */
+    background: #fff;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border: 3px solid(#333);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.retry-btn:hover {
+    background: #f0f0f0;
 }

@@ -54,3 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var retryButton = document.getElementById('error-button');  // Der Retry-Button
+    var wrapper = document.querySelector('.wrapper');           // Der Wrapper, der die Forms enthält
+    
+    if (retryButton) {
+        retryButton.addEventListener('click', function() {
+            // Aktion bei Klick auf den Retry-Button: Login-Section öffnen
+            wrapper.classList.remove('active'); // Entfernt die "active" Klasse (falls Registration offen)
+            wrapper.classList.add('active-popup'); // Fügt die Klasse hinzu, um den Login anzuzeigen
+        });
+    } else {
+        console.log("Retry button not found");
+    }
+});
