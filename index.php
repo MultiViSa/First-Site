@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="index" content="width=device-width, initial-scale=1.0">
-    <title>python_in_html</title>
+    <title>First Site</title>
 
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -12,27 +12,14 @@
 
 <?php
 session_start(); // Session starten, um die Nachricht abzurufen
+include 'message_box.php'; 
 
-if (isset($_SESSION['message'])) {
-    $message_class = isset($_SESSION['message_type']) && $_SESSION['message_type'] == 'success' ? 'success' : 'error';
-
-    echo "<div id='response-box' class='response-box $message_class'>
-            <span id='close-btn' class='bx bx-exit'></span>
-            <p>" . $_SESSION['message'] . "</p>";
-
-                    // Überprüfe, ob der message_type 'error' ist und füge einen Button hinzu
-            if (isset($_SESSION['message_type']) && $_SESSION['message_type'] == 'error') {
-                echo "<button id='error-button' class='retry-btn'>Retry</button>";
-            }
-
-          echo "</div>";
-    
-    unset($_SESSION['message']); // Nachricht nach dem Anzeigen löschen
-    unset($_SESSION['message_type']); // Typ ebenfalls löschen
-}
+//// Überprüfen, ob der Benutzer eingeloggt ist
+//if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+//    header("Location: dashboard.php"); // Leitet zu Dashboard weiter
+//    exit();
+//}
 ?>
-
-
 
     <header>
         <h2 class="logo">logo</h2>
@@ -136,7 +123,6 @@ if (isset($_SESSION['message'])) {
     </div> 
 
    </div>
-    <script src="script.js"></script>
-
+   <script src="script.js"></script>
 </body>
 </html>

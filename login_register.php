@@ -33,14 +33,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT * FROM users WHERE username='$user'";
         $result = $conn->query($sql);
 
-        if (password_verify($pass, $row['password'])) {
-            //$_SESSION['logged_in'] = true;  // Benutzer ist eingeloggt
-            //$_SESSION['username'] = $user;  // Benutzername speichern
+        $row = $result->fetch_assoc();
+        $hashedPassword = $row['password']; // Das gehashte Passwort aus der DB
+
+        if (password_verify($pass, $hashedPassword)) {
+            $_SESSION['logged_in'] = true;  // Benutzer ist eingeloggt
+            $_SESSION['username'] = $user;  // Benutzername speichern
             $_SESSION['message'] = "Login successful! Welcome back $user";
             $_SESSION['message_type'] = 'success';
+            header("Location: dashboard.php");
+            exit();
         } else {
             $_SESSION['message'] = "Invalid password.";
             $_SESSION['message_type'] = 'error';
+            header("Location: index.php");
+            exit();
+            error_log("Password entered: $pass"); // Debugging
+            error_log("Hashed password from DB: $hashedPassword"); // Debugging
         }
         
         } else {
@@ -51,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: index.php");
         exit();
     } 
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['register']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
