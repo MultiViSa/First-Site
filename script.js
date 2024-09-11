@@ -1,27 +1,3 @@
-// Existierender Code für das Handling der Seitenumstellung und Popups
-const wrapper = document.querySelector('.wrapper');
-const loginLink = document.querySelector('.login-link');
-const registerLink = document.querySelector('.register-link');
-const btnPopup = document.querySelector('.btnLogin-popup');
-const iconClose = document.querySelector('.icon-close');
-
-registerLink.addEventListener('click', () => {
-    wrapper.classList.add('active');
-});
-
-loginLink.addEventListener('click', () => {
-    wrapper.classList.remove('active');
-});
-
-btnPopup.addEventListener('click', () => {
-    wrapper.classList.add('active-popup');
-});
-
-iconClose.addEventListener('click', () => {
-    wrapper.classList.remove('active-popup');
-});
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // Nachricht-Element finden
     var responseBox = document.getElementById('response-box');
@@ -42,14 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
 document.addEventListener('DOMContentLoaded', function() {
     var responseBox = document.getElementById('response-box');
     var closeButton = document.getElementById('close-btn');
-
+    console.log("x functions")
     if (closeButton) {
+        console.log("closeButton detected")
         closeButton.addEventListener('click', function() {
             if (responseBox) {
                 responseBox.style.display = 'none';
+                console.log("closed")
             }
         });
     }
@@ -67,5 +46,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.log("Retry button not found");
+    }
+});
+
+
+// Existierender Code für das Handling der Seitenumstellung und Popups
+document.addEventListener('DOMContentLoaded', function() {
+    var wrapper = document.querySelector('.wrapper');
+    if (wrapper) {
+        var loginLink = document.querySelector('.login-link');
+        var registerLink = document.querySelector('.register-link');
+        var btnPopup = document.querySelector('.btnLogin-popup');
+        var iconClose = document.querySelector('.icon-close');
+
+        if (loginLink) {
+            loginLink.addEventListener('click', function() {
+                wrapper.classList.remove('active');
+            });
+        }
+
+        if (registerLink) {
+            registerLink.addEventListener('click', function() {
+                wrapper.classList.add('active');
+            });
+        }
+
+        if (btnPopup) {
+            btnPopup.addEventListener('click', function() {
+                wrapper.classList.add('active-popup');
+            });
+        }
+
+        if (iconClose) {
+            iconClose.addEventListener('click', function() {
+                wrapper.classList.remove('active-popup');
+            });
+        }
     }
 });

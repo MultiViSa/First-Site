@@ -1,12 +1,13 @@
 <?php
 session_start();
+include 'message_box.php';
 
 // Überprüfen, ob der Benutzer eingeloggt ist
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    // Wenn der Benutzer nicht eingeloggt ist, zurück zum Login
-    header("Location: index.php");
-    exit();
-}
+//if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+//    // Wenn der Benutzer nicht eingeloggt ist, zurück zum Login
+//    header("Location: index.php");
+//    exit();
+//}
 
 // Abmelde-Logik
 if (isset($_POST['logout'])) {
@@ -16,8 +17,6 @@ if (isset($_POST['logout'])) {
     header("Location: index.php");
     exit();
 }
-
-include 'message_box.php';
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +26,7 @@ include 'message_box.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 

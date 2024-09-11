@@ -34,7 +34,7 @@ include 'message_box.php';
 
     <div class="Wrapper">
         <span class="icon-close">
-            <i class='bx bx-exit'></i>
+            <i class='bx bx-x'></i>
         </span>
 
     <div class="form-box Login">    
