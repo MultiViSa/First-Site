@@ -20,12 +20,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if (!$conn) {
-    die("Database connection not established.");
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password'])) {
+// Login-Prozess
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
@@ -33,37 +30,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT * FROM users WHERE username='$user'";
         $result = $conn->query($sql);
 
-        $row = $result->fetch_assoc();
-        $hashedPassword = $row['password']; // Das gehashte Passwort aus der DB
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $hashedPassword = $row['password']; // Das gehashte Passwort aus der DB
 
-        if (password_verify($pass, $hashedPassword)) {
-            $_SESSION['logged_in'] = true;  // Benutzer ist eingeloggt
-            $_SESSION['username'] = $user;  // Benutzername speichern
-            $_SESSION['message'] = "Login successful! Welcome back $user";
-            $_SESSION['message_type'] = 'success';
-            header("Location: dashboard.php");
-            exit();
+            if (password_verify($pass, $hashedPassword)) {
+                $_SESSION['logged_in'] = true;  // Benutzer ist eingeloggt
+                $_SESSION['username'] = $user;  // Benutzername speichern
+                $_SESSION['message'] = "Login successful! Welcome back $user";
+                $_SESSION['message_type'] = 'success';
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $_SESSION['message'] = "Invalid password.";
+                $_SESSION['message_type'] = 'error';
+                header("Location: index.php");
+                exit();
+            }
         } else {
-            $_SESSION['message'] = "Invalid password.";
+            $_SESSION['message'] = "User does not exist.";
             $_SESSION['message_type'] = 'error';
             header("Location: index.php");
             exit();
-            error_log("Password entered: $pass"); // Debugging
-            error_log("Hashed password from DB: $hashedPassword"); // Debugging
         }
-        
-        } else {
-            $_SESSION['message'] = "User does not exist.";
-            $_SESSION['message_type'] = 'error';  // Fehlerhafte Nachricht
-        }
+    }
+}
 
-        header("Location: index.php");
-        exit();
-    } 
-
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['register']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
+// Registrierungs-Prozess
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+    if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
         $email = $_POST['email'];
@@ -74,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result && $result->num_rows > 0) {
             $_SESSION['message'] = "Email or username already exists.";
-            $_SESSION['message_type'] = 'error';  // Fehlerhafte Nachricht
+            $_SESSION['message_type'] = 'error';
         } else {
             // Passwort-Hashing (für sichere Passwortspeicherung)
             $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
@@ -82,15 +77,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Benutzer in der Datenbank speichern
             $sql = "INSERT INTO users (username, password, email) VALUES ('$user', '$hashed_password', '$email')";
             if ($conn->query($sql) === TRUE) {
-                $_SESSION['message'] = "Registration successful! You can now log in.";
-                $_SESSION['message_type'] = 'success';  // Erfolgreiche Nachricht
+                $_SESSION['message'] = "Registration successful!";
+                $_SESSION['message_type'] = 'success';
             } else {
                 $_SESSION['message'] = "Error: " . $conn->error;
-                $_SESSION['message_type'] = 'error';  // Fehlerhafte Nachricht
+                $_SESSION['message_type'] = 'error';
             }
         }
 
-        header("Location: index.php");
+        header("Location: dashboard.php");
         exit();
     }
 }
